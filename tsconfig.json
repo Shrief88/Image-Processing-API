@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+      "target": "ES5",                                 
+      "module": "commonjs", 
+      "lib": ["DOM","ES6"],                              
+      "outDir": "./dist",                                  
+      "esModuleInterop": true,                            
+      "forceConsistentCasingInFileNames": true,            
+      "strict": true,                                     
+      "noImplicitAny": true,  
+      "skipLibCheck": true                         
+    },
+    "exclude": ["node_modules","spec"],
+    "include": ["src/**/*"]
+}
