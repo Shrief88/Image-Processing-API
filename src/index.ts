@@ -47,3 +47,5 @@ app.get("/api/images", async (req: express.Request, res: express.Response) => {
 app.listen(port, hostname, () => {
   console.log(`server is running on http://${hostname}:${port}`);
 });
+
+export default app;

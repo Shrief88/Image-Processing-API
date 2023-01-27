@@ -39,49 +39,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
-var path_1 = __importDefault(require("path"));
-var sharp_1 = __importDefault(require("sharp"));
-var fs_1 = __importDefault(require("fs"));
-var app = (0, express_1.default)();
-var port = 3000;
-var hostname = "localhost";
-var resizeImage = function (req) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, fillname, width, height, filePath, outputPath;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0:
-                _a = req.query, fillname = _a.fillname, width = _a.width, height = _a.height;
-                filePath = path_1.default.resolve(__dirname, "..", "full", "".concat(fillname, ".jpg"));
-                outputPath = path_1.default.resolve(__dirname, "..", "thumb", "".concat(fillname, "-").concat(width, "-").concat(height, ".jpg"));
-                return [4 /*yield*/, (0, sharp_1.default)(filePath)
-                        .resize({ width: parseInt(width), height: parseInt(height) })
-                        .toFile(outputPath)];
-            case 1:
-                _b.sent();
-                return [2 /*return*/];
-        }
-    });
-}); };
-app.get("/api/images", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, fillname, width, height, filePath;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0:
-                _a = req.query, fillname = _a.fillname, width = _a.width, height = _a.height;
-                filePath = path_1.default.resolve(__dirname, "..", "thumb", "".concat(fillname, "-").concat(width, "-").concat(height, ".jpg"));
-                if (!!fs_1.default.existsSync(filePath)) return [3 /*break*/, 2];
-                return [4 /*yield*/, resizeImage(req)];
-            case 1:
-                _b.sent();
-                _b.label = 2;
-            case 2:
-                res.sendFile(filePath);
-                return [2 /*return*/];
-        }
-    });
-}); });
-app.listen(port, hostname, function () {
-    console.log("server is running on http://".concat(hostname, ":").concat(port));
+var supertest_1 = __importDefault(require("supertest"));
+var __1 = __importDefault(require(".."));
+var request = (0, supertest_1.default)(__1.default);
+describe("Test endpoint response", function () {
+    it("gets the api endpoint", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get("/api/images").query({
+                        fillname: "fjord",
+                        width: "200",
+                        height: "200",
+                    })];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
 });
-exports.default = app;

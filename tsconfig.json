@@ -10,6 +10,6 @@
       "noImplicitAny": true,  
       "skipLibCheck": true                         
     },
-    "exclude": ["node_modules","spec"],
+    "exclude": ["node_modules","./dist","spec"],
     "include": ["src/**/*"]
 }
