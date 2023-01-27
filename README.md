@@ -22,6 +22,8 @@ Expected query arguments are:
 - _width_: numerical pixel value > 0
 - _height_: numerical pixel value > 0
 
+All query parameters should be added in the URL , if not it will produce an error.
+
 
 #### Example
 http://localhost:3000/api/images?filename=fjord&width=200&height=200
