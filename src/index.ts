@@ -1,7 +1,7 @@
 import express, { type RequestHandler } from "express";
 import path from "path";
-import sharp from "sharp";
 import fs from "fs";
+import resizeImage from "./utilities/image";
 
 const app = express();
 const port = 3000;
@@ -39,10 +39,14 @@ app.get("/api/images", (async (req: express.Request, res: express.Response) => {
   }
 
   if (!fs.existsSync(outputPath)) {
+    console.log('hee');
     try {
-      await sharp(filePath)
-        .resize({ width: parseInt(width), height: parseInt(height) })
-        .toFile(outputPath);
+      await resizeImage(
+        filePath,
+        outputPath,
+        parseInt(width),
+        parseInt(height)
+      );
     } catch (e) {
       return res.status(500).send("something went wrong");
     }

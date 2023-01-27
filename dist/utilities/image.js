@@ -39,50 +39,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
-var path_1 = __importDefault(require("path"));
-var fs_1 = __importDefault(require("fs"));
-var image_1 = __importDefault(require("./utilities/image"));
-var app = (0, express_1.default)();
-var port = 3000;
-var hostname = "localhost";
-app.get("/api/images", (function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, filename, width, height, filePath, outputPath, e_1;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0:
-                _a = req.query, filename = _a.filename, width = _a.width, height = _a.height;
-                filePath = path_1.default.resolve(__dirname, "..", "full", "".concat(filename, ".jpg"));
-                outputPath = path_1.default.resolve(__dirname, "..", "thumb", "".concat(filename, "-").concat(width, "-").concat(height, ".jpg"));
-                if (!fs_1.default.existsSync(filePath)) {
-                    return [2 /*return*/, res.status(404).send("No such file")];
-                }
-                if (isNaN(parseInt(height)) ||
-                    isNaN(parseInt(width)) ||
-                    parseInt(width) < 0 ||
-                    parseInt(height) < 0) {
-                    return [2 /*return*/, res
-                            .status(400)
-                            .send("you should send proper values for height and width")];
-                }
-                if (!!fs_1.default.existsSync(outputPath)) return [3 /*break*/, 4];
-                _b.label = 1;
+var sharp_1 = __importDefault(require("sharp"));
+var resizeImage = function (filePath, outputPath, width, height) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, (0, sharp_1.default)(filePath).resize({ width: width, height: height }).toFile(outputPath)];
             case 1:
-                _b.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, (0, image_1.default)(filePath, outputPath, parseInt(width), parseInt(height))];
-            case 2:
-                _b.sent();
-                return [3 /*break*/, 4];
-            case 3:
-                e_1 = _b.sent();
-                return [2 /*return*/, res.status(500).send("something went wrong")];
-            case 4:
-                res.sendFile(outputPath);
+                _a.sent();
                 return [2 /*return*/];
         }
     });
-}); }));
-app.listen(port, hostname, function () {
-    console.log("server is running on http://".concat(hostname, ":").concat(port));
-});
-exports.default = app;
+}); };
+exports.default = resizeImage;

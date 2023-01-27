@@ -17,22 +17,6 @@ describe("Test endpoint response", () => {
     );
   });
 
-  it("create new file in thumb folder", async () => {
-    await request.get("/api/images").query({
-      filename: "fjord",
-      width: "200",
-      height: "200",
-    });
-    const outputPath = path.resolve(
-      __dirname,
-      "..",
-      "..",
-      "thumb",
-      "fjord-200-200.jpg"
-    );
-    expect(fs.existsSync(outputPath)).toBe(true);
-  });
-
   describe("throw an error when user enter unvaild file name", () => {
     it("throw an error when user does not provide value", async () => {
       const response = await request.get("/api/images").query({

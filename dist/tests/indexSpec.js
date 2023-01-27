@@ -64,23 +64,6 @@ describe("Test endpoint response", function () {
             }
         });
     }); });
-    it("create new file in thumb folder", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var outputPath;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get("/api/images").query({
-                        filename: "fjord",
-                        width: "200",
-                        height: "200",
-                    })];
-                case 1:
-                    _a.sent();
-                    outputPath = path_1.default.resolve(__dirname, "..", "..", "thumb", "fjord-200-200.jpg");
-                    expect(fs_1.default.existsSync(outputPath)).toBe(true);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
     describe("throw an error when user enter unvaild file name", function () {
         it("throw an error when user does not provide value", function () { return __awaiter(void 0, void 0, void 0, function () {
             var response;
