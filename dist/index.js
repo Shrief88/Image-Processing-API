@@ -39,35 +39,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resizeImage = exports.app = void 0;
 var express_1 = __importDefault(require("express"));
 var path_1 = __importDefault(require("path"));
 var sharp_1 = __importDefault(require("sharp"));
 var fs_1 = __importDefault(require("fs"));
 var app = (0, express_1.default)();
-exports.app = app;
 var port = 3000;
 var hostname = "localhost";
-var resizeImage = function (filePath, outputPath, width, height) { return __awaiter(void 0, void 0, void 0, function () {
-    var e_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, (0, sharp_1.default)(filePath).resize({ width: width, height: height }).toFile(outputPath)];
-            case 1:
-                _a.sent();
-                return [3 /*break*/, 3];
-            case 2:
-                e_1 = _a.sent();
-                throw new Error("something went wrong");
-            case 3: return [2 /*return*/];
-        }
-    });
-}); };
-exports.resizeImage = resizeImage;
 app.get("/api/images", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, filename, width, height, filePath, outputPath, e_2;
+    var _a, filename, width, height, filePath, outputPath, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -89,13 +69,15 @@ app.get("/api/images", function (req, res) { return __awaiter(void 0, void 0, vo
                 _b.label = 1;
             case 1:
                 _b.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, resizeImage(filePath, outputPath, parseInt(width), parseInt(height))];
+                return [4 /*yield*/, (0, sharp_1.default)(filePath)
+                        .resize({ width: parseInt(width), height: parseInt(height) })
+                        .toFile(outputPath)];
             case 2:
                 _b.sent();
                 return [3 /*break*/, 4];
             case 3:
-                e_2 = _b.sent();
-                return [2 /*return*/, res.status(500).send(e_2.message)];
+                e_1 = _b.sent();
+                return [2 /*return*/, res.status(500).send("something went wrong")];
             case 4:
                 res.sendFile(outputPath);
                 return [2 /*return*/];
@@ -105,3 +87,4 @@ app.get("/api/images", function (req, res) { return __awaiter(void 0, void 0, vo
 app.listen(port, hostname, function () {
     console.log("server is running on http://".concat(hostname, ":").concat(port));
 });
+exports.default = app;

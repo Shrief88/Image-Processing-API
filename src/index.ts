@@ -13,19 +13,6 @@ interface Query {
   height: string;
 }
 
-const resizeImage = async (
-  filePath: string,
-  outputPath: string,
-  width: number,
-  height: number
-): Promise<void> => {
-  try {
-    await sharp(filePath).resize({ width, height }).toFile(outputPath);
-  } catch (e) {
-    throw new Error("something went wrong");
-  }
-};
-
 app.get("/api/images", async (req: express.Request, res: express.Response) => {
   const { filename, width, height } = req.query as unknown as Query;
   const filePath = path.resolve(__dirname, "..", "full", `${filename}.jpg`);
@@ -53,14 +40,11 @@ app.get("/api/images", async (req: express.Request, res: express.Response) => {
 
   if (!fs.existsSync(outputPath)) {
     try {
-      await resizeImage(
-        filePath,
-        outputPath,
-        parseInt(width),
-        parseInt(height)
-      );
+      await sharp(filePath)
+        .resize({ width: parseInt(width), height: parseInt(height) })
+        .toFile(outputPath);
     } catch (e) {
-      return res.status(500).send(e.message);
+      return res.status(500).send("something went wrong");
     }
   }
 
@@ -71,4 +55,4 @@ app.listen(port, hostname, () => {
   console.log(`server is running on http://${hostname}:${port}`);
 });
 
-export { app, resizeImage };
+export default app;

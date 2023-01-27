@@ -1,5 +1,5 @@
 import supertest from "supertest";
-import { app, resizeImage } from "..";
+import app from "..";
 import path from "path";
 import fs from "fs";
 
@@ -15,6 +15,22 @@ describe("Test endpoint response", () => {
     await fs.promises.unlink(
       path.resolve(__dirname, "..", "..", "thumb", "fjord-200-200.jpg")
     );
+  });
+
+  it("create new file in thumb folder", async () => {
+    await request.get("/api/images").query({
+      filename: "fjord",
+      width: "200",
+      height: "200",
+    });
+    const outputPath = path.resolve(
+      __dirname,
+      "..",
+      "..",
+      "thumb",
+      "fjord-200-200.jpg"
+    );
+    expect(fs.existsSync(outputPath)).toBe(true);
   });
 
   describe("throw an error when user enter unvaild file name", () => {
@@ -117,20 +133,5 @@ describe("Test endpoint response", () => {
       });
       expect(response.status).toBe(400);
     });
-  });
-});
-
-describe("Test resize process", () => {
-  it("create file in thumb folder", async () => {
-    const filePath = path.resolve(__dirname, "..", "..", "full", "fjord.jpg");
-    const outputPath = path.resolve(
-      __dirname,
-      "..",
-      "..",
-      "thumb",
-      "fjord-200-200.jpg"
-    );
-    await resizeImage(filePath, outputPath, 200, 200);
-    expect(fs.existsSync(outputPath)).toBe(true);
   });
 });
