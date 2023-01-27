@@ -23,9 +23,17 @@ const resizeImage = async (req: express.Request): Promise<void> => {
     `${fillname}-${width}-${height}.jpg`
   );
 
-  await sharp(filePath)
-    .resize({ width: parseInt(width), height: parseInt(height) })
-    .toFile(outputPath);
+  if (isNaN(parseInt(height)) || isNaN(parseInt(width))) {
+    throw new Error("you should send proper values for height and width");
+  }
+
+  try {
+    await sharp(filePath)
+      .resize({ width: parseInt(width), height: parseInt(height) })
+      .toFile(outputPath);
+  } catch (e) {
+    throw new Error("no such files");
+  }
 };
 
 app.get("/api/images", async (req: express.Request, res: express.Response) => {
@@ -38,7 +46,11 @@ app.get("/api/images", async (req: express.Request, res: express.Response) => {
   );
 
   if (!fs.existsSync(filePath)) {
-    await resizeImage(req);
+    try {
+      await resizeImage(req);
+    } catch (e) {
+      res.status(400).send(e.message);
+    }
   }
 
   res.sendFile(filePath);
