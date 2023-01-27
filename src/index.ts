@@ -1,4 +1,4 @@
-import express from "express";
+import express, { type RequestHandler } from "express";
 import path from "path";
 import sharp from "sharp";
 import fs from "fs";
@@ -13,7 +13,7 @@ interface Query {
   height: string;
 }
 
-app.get("/api/images", async (req: express.Request, res: express.Response) => {
+app.get("/api/images", (async (req: express.Request, res: express.Response) => {
   const { filename, width, height } = req.query as unknown as Query;
   const filePath = path.resolve(__dirname, "..", "full", `${filename}.jpg`);
 
@@ -49,7 +49,7 @@ app.get("/api/images", async (req: express.Request, res: express.Response) => {
   }
 
   res.sendFile(outputPath);
-});
+}) as RequestHandler);
 
 app.listen(port, hostname, () => {
   console.log(`server is running on http://${hostname}:${port}`);

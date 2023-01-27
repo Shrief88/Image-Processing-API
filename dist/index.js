@@ -46,7 +46,7 @@ var fs_1 = __importDefault(require("fs"));
 var app = (0, express_1.default)();
 var port = 3000;
 var hostname = "localhost";
-app.get("/api/images", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/api/images", (function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, filename, width, height, filePath, outputPath, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -83,7 +83,7 @@ app.get("/api/images", function (req, res) { return __awaiter(void 0, void 0, vo
                 return [2 /*return*/];
         }
     });
-}); });
+}); }));
 app.listen(port, hostname, function () {
     console.log("server is running on http://".concat(hostname, ":").concat(port));
 });
