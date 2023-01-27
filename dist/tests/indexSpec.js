@@ -40,21 +40,222 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var supertest_1 = __importDefault(require("supertest"));
-var __1 = __importDefault(require(".."));
-var request = (0, supertest_1.default)(__1.default);
+var __1 = require("..");
+var path_1 = __importDefault(require("path"));
+var fs_1 = __importDefault(require("fs"));
+var request = (0, supertest_1.default)(__1.app);
 describe("Test endpoint response", function () {
     it("gets the api endpoint", function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, request.get("/api/images").query({
-                        fillname: "fjord",
+                        filename: "fjord",
                         width: "200",
                         height: "200",
                     })];
                 case 1:
                     response = _a.sent();
                     expect(response.status).toBe(200);
+                    return [4 /*yield*/, fs_1.default.promises.unlink(path_1.default.resolve(__dirname, "..", "..", "thumb", "fjord-200-200.jpg"))];
+                case 2:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    describe("throw an error when user enter unvaild file name", function () {
+        it("throw an error when user does not provide value", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, request.get("/api/images").query({
+                            width: "200",
+                            height: "200",
+                        })];
+                    case 1:
+                        response = _a.sent();
+                        expect(response.status).toBe(404);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        it("throw an error when user enters wrong value", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, request.get("/api/images").query({
+                            filename: "ford",
+                            width: "200",
+                            height: "200",
+                        })];
+                    case 1:
+                        response = _a.sent();
+                        expect(response.status).toBe(404);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        it("throw an error when user enters wrong key value", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, request.get("/api/images").query({
+                            fillllname: "fjord",
+                            width: "200",
+                            height: "200",
+                        })];
+                    case 1:
+                        response = _a.sent();
+                        expect(response.status).toBe(404);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+    });
+    describe("throw an error when user enter unvaild width", function () {
+        it("throw an error when user does not provide value", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, request.get("/api/images").query({
+                            filename: "fjord",
+                            height: "200",
+                        })];
+                    case 1:
+                        response = _a.sent();
+                        expect(response.status).toBe(400);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        it("throw an error when user enter negative value", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, request.get("/api/images").query({
+                            filename: "fjord",
+                            width: "-200",
+                            height: "200",
+                        })];
+                    case 1:
+                        response = _a.sent();
+                        expect(response.status).toBe(400);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        it("throw an error when user enters wrong key value", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, request.get("/api/images").query({
+                            filename: "fjord",
+                            widttth: "200",
+                            height: "200",
+                        })];
+                    case 1:
+                        response = _a.sent();
+                        expect(response.status).toBe(400);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        it("throw an error when user enters NAN value", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, request.get("/api/images").query({
+                            filename: "fjord",
+                            width: "NAN",
+                            height: "200",
+                        })];
+                    case 1:
+                        response = _a.sent();
+                        expect(response.status).toBe(400);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+    });
+    describe("throw an error when user enter unvaild height", function () {
+        it("throw an error when user does not provide value", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, request.get("/api/images").query({
+                            filename: "fjord",
+                            width: "200",
+                        })];
+                    case 1:
+                        response = _a.sent();
+                        expect(response.status).toBe(400);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        it("throw an error when user enter negative value", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, request.get("/api/images").query({
+                            filename: "fjord",
+                            width: "200",
+                            height: "-200",
+                        })];
+                    case 1:
+                        response = _a.sent();
+                        expect(response.status).toBe(400);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        it("throw an error when user enters wrong key value", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, request.get("/api/images").query({
+                            filename: "fjord",
+                            width: "200",
+                            heiggght: "200",
+                        })];
+                    case 1:
+                        response = _a.sent();
+                        expect(response.status).toBe(400);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        it("throw an error when user enters NAN value", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, request.get("/api/images").query({
+                            filename: "fjord",
+                            width: "200",
+                            height: "NAN",
+                        })];
+                    case 1:
+                        response = _a.sent();
+                        expect(response.status).toBe(400);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+    });
+});
+describe("Test resize process", function () {
+    it("create file in thumb folder", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var filePath, outputPath;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    filePath = path_1.default.resolve(__dirname, "..", "..", "full", "fjord.jpg");
+                    outputPath = path_1.default.resolve(__dirname, "..", "..", "thumb", "fjord-200-200.jpg");
+                    return [4 /*yield*/, (0, __1.resizeImage)(filePath, outputPath, 200, 200)];
+                case 1:
+                    _a.sent();
+                    expect(fs_1.default.existsSync(outputPath)).toBe(true);
                     return [2 /*return*/];
             }
         });
