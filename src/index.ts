@@ -39,7 +39,6 @@ app.get("/api/images", (async (req: express.Request, res: express.Response) => {
   }
 
   if (!fs.existsSync(outputPath)) {
-    console.log('hee');
     try {
       await resizeImage(
         filePath,

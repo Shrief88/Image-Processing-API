@@ -64,18 +64,3 @@ describe("Test image processing function", function () {
         });
     }); });
 });
-// it("create new file in thumb folder", async () => {
-//     await request.get("/api/images").query({
-//       filename: "fjord",
-//       width: "200",
-//       height: "200",
-//     });
-//     const outputPath = path.resolve(
-//       __dirname,
-//       "..",
-//       "..",
-//       "thumb",
-//       "fjord-200-200.jpg"
-//     );
-//     expect(fs.existsSync(outputPath)).toBe(true);
-//   });
